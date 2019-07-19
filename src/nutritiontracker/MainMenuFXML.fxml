@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import java.net.URL ?>
+
+<VBox styleClass="mainWindow" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nutritiontracker.MainMenuController">
+  
+        <GridPane alignment="CENTER">
+            <Label id="mainLabel" text="Main Menu" />            
+        </GridPane>
+
+        <GridPane hgap="100" alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" halignment="CENTER" />
+                <ColumnConstraints hgrow="NEVER" halignment="CENTER" />
+            </columnConstraints>
+            <children>
+                <Label text="Products" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <Button fx:id="viewBtn" text="View" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <Button fx:id="addBtn" text="Add" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <Button fx:id="searchBtn" text="Search" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+            
+                <Label text="Reports" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                <Button fx:id="catBasedBtn" text="Category Based" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                <Button fx:id="favBtn" text="Favourites" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                <Button fx:id="nutBasedBtn" text="Nutrition Based" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+            </children>
+        </GridPane>
+    
+    <stylesheets>
+        <URL value="@css/mainCss.css" />
+    </stylesheets>
+</VBox>
