@@ -35,10 +35,10 @@ public class ViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         menuBtn.setOnAction((ActionEvent event) -> {
-            //Get current window from the btn element and close it
-            Stage stage = (Stage)menuBtn.getScene().getWindow();
-            stage.close();
             try {
+                //Get current window from the btn element and close it
+                Stage stage = (Stage)menuBtn.getScene().getWindow();
+                stage.close();
                 //Creeate new window and display it
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("MainMenuFXML.fxml"));
