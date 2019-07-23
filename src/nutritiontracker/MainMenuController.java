@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 public class MainMenuController implements Initializable {
     
     @FXML
-    private Button viewBtn;
+    private Button viewBtn, addBtn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -44,6 +44,27 @@ public class MainMenuController implements Initializable {
                 stage.setResizable(false);
                 stage.setTitle("Nutrition Tracker");
                 stage.setScene(viewScene);
+                stage.show();
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Failed to create new Window.", e);
+            }
+        });
+        
+        //Add btn opens the add records window
+        addBtn.setOnAction((ActionEvent event) -> {
+            try {
+                //Get current window from the btn element and close it
+                Stage stage = (Stage)addBtn.getScene().getWindow();
+                stage.close();
+                //Creeate new window and display it
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("AddFXML.fxml"));
+                Scene addScene = new Scene(fxmlLoader.load(), 700, 550);
+                stage = new Stage();
+                stage.setResizable(false);
+                stage.setTitle("Nutrition Tracker");
+                stage.setScene(addScene);
                 stage.show();
             } catch (IOException e) {
                 Logger logger = Logger.getLogger(getClass().getName());
