@@ -5,7 +5,25 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nutritiontracker.SearchController">
+<VBox styleClass="mainWindow" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nutritiontracker.SearchController">
+    <HBox>
+        <Button fx:id="menuBtn" text="Main Menu" />
+        <Label id="mainLabel" text="Search" />
+    </HBox>
+    <GridPane styleClass="interactionArea">
+        
+        <Label text="Product Name" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="searchTxt" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+        
+        
+    </GridPane>
+    <VBox styleClass="btnArea">
+        <Button fx:id="searchBtn" text="Search" defaultButton="true" />
+    </VBox>
     
-</AnchorPane>
+    <stylesheets>
+        <URL value="@css/searchCss.css" />
+    </stylesheets>
+</VBox>
