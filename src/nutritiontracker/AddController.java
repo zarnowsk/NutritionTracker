@@ -5,9 +5,18 @@
  */
 package nutritiontracker;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -16,12 +25,35 @@ import javafx.fxml.Initializable;
  */
 public class AddController implements Initializable {
 
+    @FXML
+    private Button menuBtn;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        menuBtn.setOnAction((ActionEvent event) -> {
+            try {
+                //Get current window from the btn element and close it
+                Stage stage = (Stage)menuBtn.getScene().getWindow();
+                stage.close();
+                //Creeate new window and display it
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("MainMenuFXML.fxml"));
+                Scene mainMenuScene = new Scene(fxmlLoader.load(), 700, 550);
+                stage = new Stage();
+                stage.setResizable(false);
+                stage.setTitle("Nutrition Tracker");
+                stage.setScene(mainMenuScene);
+                stage.show();
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Failed to create new Window.", e);
+            }
+        });
     }    
     
 }
+
