@@ -28,3 +28,31 @@ Button:hover {
     -fx-font-size: 25pt;
     -fx-padding: 5px 0 0 150px;
 }
+
+Label {
+    -fx-text-fill: white;
+    -fx-font-size: 20pt;
+}
+
+.filterArea {
+    -fx-padding: 20px 0 20px 0;
+    -fx-alignment: center;
+}
+
+.filterDropDown {
+    -fx-padding: 0px 100px 0 10px;
+    -fx-alignment: center;
+}
+
+.combo-box {
+    -fx-pref-width: 300px;
+}
+
+#customWeightBtn {
+    -fx-pref-width: 200px;
+    -fx-spacing: 200px;
+}
+
+.list-view {
+    -fx-pref-width: 600px;
+}
