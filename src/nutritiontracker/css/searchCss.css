@@ -8,3 +8,49 @@ and open the template in the editor.
     Author     : Michal Zarnowski
 */
 
+.mainWindow {
+    -fx-background-color: #59b7ff;
+}
+
+.interactionArea {
+    -fx-alignment: center;
+    -fx-padding: 100px 0 50px 0;
+    -fx-hgap: 15px;
+}
+
+Button {
+    -fx-pref-width: 100px;
+    -fx-pref-height: 40px;
+    -fx-background-insets: 5px;
+}
+
+Button:hover {
+    -fx-background-color: #abb5c4;
+    -fx-text-fill: #0091ff;
+}
+
+#searchBtn {
+    -fx-font-size: 20pt;
+    -fx-pref-width: 200px;
+}
+
+#mainLabel {
+    -fx-text-fill: white;
+    -fx-font-size: 25pt;
+    -fx-padding: 5px 0 0 200px;
+}
+
+.interactionArea Label {
+    -fx-pref-width: 200px;
+    -fx-text-fill: white;
+    -fx-font-size: 20pt;
+    -fx-alignment: center-right;
+}
+
+.text-field {
+    -fx-pref-width: 300px;
+}
+
+.btnArea {
+    -fx-alignment: center;
+}
