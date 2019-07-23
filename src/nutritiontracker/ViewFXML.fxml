@@ -12,6 +12,25 @@
         <Button fx:id="menuBtn" text="Main Menu" />
         <Label id="mainLabel" text="View Products" />
     </HBox>
+    <GridPane styleClass="filterArea" >
+        <HBox styleClass="filterDropDown" GridPane.rowIndex="0" GridPane.columnIndex="0">
+            <Label text="Filter" />
+            <ComboBox fx:id="filterCmb" editable="false"/>
+        </HBox>
+        <Button fx:id="customWeightBtn" text="Enter Custom Weight" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    </GridPane>
+    <HBox>
+        <ListView fx:id="recordsLst" />
+        <VBox>
+            <Button fx:id="sortBtn" text="Sort" />
+            <Button fx:id="editBtn" text="Edit" />
+            <Button fx:id="deleteBtn" text="Delete" />
+            <Button fx:id="nextBtn" text="Next" />
+            <Button fx:id="prevBtn" text="Prev" />
+            <Button fx:id="searchBtn" text="Search" />
+            <Button fx:id="favouriteBtn" text="Favourite" />
+        </VBox>
+    </HBox>
     <stylesheets>
         <URL value="@css/viewCss.css" />
     </stylesheets>
