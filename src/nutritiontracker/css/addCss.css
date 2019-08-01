@@ -54,3 +54,7 @@ Button:hover {
 .btnArea {
     -fx-alignment: center;
 }
+
+.combo-box {
+    -fx-pref-width: 300px;
+}
