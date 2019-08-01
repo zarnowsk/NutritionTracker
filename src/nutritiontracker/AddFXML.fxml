@@ -26,7 +26,7 @@
         <TextField fx:id="fatTxt" GridPane.rowIndex="3" GridPane.columnIndex="1" />
         
         <Label text="Category" GridPane.rowIndex="4" GridPane.columnIndex="0" />
-        <ComboBox fx:id="categoryCmb" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+        <ComboBox fx:id="categoryCmb" promptText="Select a category" GridPane.rowIndex="4" GridPane.columnIndex="1" />
        
     </GridPane>
     <VBox styleClass="btnArea">
