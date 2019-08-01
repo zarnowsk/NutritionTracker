@@ -88,14 +88,14 @@ public class AddController implements Initializable {
         addBtn.setOnAction((ActionEvent event) -> {
             //Vars to be saved
             boolean validNutrition = true; //if all nutrition values are valid
-            String name = "", nutritionCategory = "";
+            String name = "", category = "", nutritionCategory = "";
             double protein = 0, carb = 0, fat = 0;
             
             //Open stream to random access file
             try {
                 recordsAccess = new RandomAccessFile(recordsFile, "rw");
             } catch(FileNotFoundException e) {
-                System.out.println("File cannot be located");
+                //IMPLEMENT WARNING DIALOG
             }
             
             //Convert data to their appropriate type, resize Strings
@@ -145,6 +145,13 @@ public class AddController implements Initializable {
                 validNutrition = false;
             }
             
+            //CATEGORY
+            try {
+                category = resizeString(categoryCmb.getSelectionModel().getSelectedItem(), 15);
+            } catch(NumberFormatException e) {
+                //IMPLEMENT VALIDATION FOR COMBO BOX
+            }
+            
             //NUTRITION CATEGORY
             if(validNutrition) {
                 nutritionCategory = resizeString(getNutritionCategory(), 7);
@@ -163,6 +170,7 @@ public class AddController implements Initializable {
                 recordsAccess.writeDouble(protein);
                 recordsAccess.writeDouble(carb);
                 recordsAccess.writeDouble(fat);
+                recordsAccess.writeChars(category);
                 recordsAccess.writeChars(nutritionCategory);
                 recordsAccess.writeBoolean(favourite);
                 
