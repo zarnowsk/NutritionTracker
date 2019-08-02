@@ -20,7 +20,17 @@
         <Button fx:id="customWeightBtn" text="Enter Custom Weight" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
     </GridPane>
     <HBox>
-        <ListView fx:id="recordsLst" />
+        <TableView fx:id="recordsTbl" >
+            <columns>
+                <TableColumn fx:id="col1" text="Product Name" />
+                <TableColumn fx:id="col2" text="Protein" />
+                <TableColumn fx:id="col3" text="Carb" />
+                <TableColumn fx:id="col4" text="Fat" />
+                <TableColumn fx:id="col5" text="Category" />
+                <TableColumn fx:id="col6" text="Nutrition" />
+                <TableColumn fx:id="col7" text="Favourite" />
+            </columns>
+        </TableView>
         <VBox>
             <Button fx:id="sortBtn" text="Sort" />
             <Button fx:id="editBtn" text="Edit" />
