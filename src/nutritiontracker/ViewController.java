@@ -60,12 +60,19 @@ public class ViewController implements Initializable {
         
         //Initialize columns in Table View
         col1.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col1.setResizable(false);
         col2.setCellValueFactory(new PropertyValueFactory<>("protein"));
+        col2.setResizable(false);
         col3.setCellValueFactory(new PropertyValueFactory<>("carb"));
+        col3.setResizable(false);
         col4.setCellValueFactory(new PropertyValueFactory<>("fat"));
+        col4.setResizable(false);
         col5.setCellValueFactory(new PropertyValueFactory<>("category"));
+        col5.setResizable(false);
         col6.setCellValueFactory(new PropertyValueFactory<>("nutrition"));
+        col6.setResizable(false);
         col7.setCellValueFactory(new PropertyValueFactory<>("favourite"));
+        col7.setResizable(false);
 
         //Open stream to random access file
         try {
