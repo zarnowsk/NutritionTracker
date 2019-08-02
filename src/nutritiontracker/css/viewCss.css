@@ -53,6 +53,28 @@ Label {
     -fx-spacing: 200px;
 }
 
-.list-view {
+.table-view {
     -fx-pref-width: 600px;
+}
+
+.table-view .column-header .label {
+    -fx-font-size: 7pt;
+    -fx-text-fill: black;
+    -fx-alignment: CENTER_LEFT;
+}
+
+#col1 {
+    -fx-pref-width: 200px;
+}
+
+#col2, #col3, #col4 {
+    -fx-pref-width: 50px;
+}
+
+#col5 {
+    -fx-pref-width: 100px;
+}
+
+#col6, #col7 {
+    -fx-pref-width: 75px;
 }
