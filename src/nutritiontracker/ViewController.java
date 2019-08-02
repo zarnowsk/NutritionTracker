@@ -5,18 +5,27 @@
  */
 package nutritiontracker;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * FXML Controller class
@@ -25,14 +34,89 @@ import javafx.stage.Stage;
  */
 public class ViewController implements Initializable {
 
+    //FXML variables
     @FXML
     private Button menuBtn, searchBtn;
+    @FXML
+    private TableView<RecordModel> recordsTbl;
+    @FXML
+    private TableColumn<RecordModel, String> col1, col5, col6, col7;
+    @FXML
+    private TableColumn<RecordModel, Double> col2, col3, col4;
+
+    
+    //Class variables
+    private static File recordsFile = new File("nutritionRecords.dat");
+    private static RandomAccessFile recordsAccess; 
+    private int recordSize = 129; //Record size in bytes
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Initialize observable list
+        ObservableList<RecordModel> observableRecords = FXCollections.observableArrayList();
+        
+        //Initialize columns in Table View
+        col1.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col2.setCellValueFactory(new PropertyValueFactory<>("protein"));
+        col3.setCellValueFactory(new PropertyValueFactory<>("carb"));
+        col4.setCellValueFactory(new PropertyValueFactory<>("fat"));
+        col5.setCellValueFactory(new PropertyValueFactory<>("category"));
+        col6.setCellValueFactory(new PropertyValueFactory<>("nutrition"));
+        col7.setCellValueFactory(new PropertyValueFactory<>("favourite"));
+
+        //Open stream to random access file
+        try {
+            recordsAccess = new RandomAccessFile(recordsFile, "rw");
+        } catch(FileNotFoundException e) {
+            //IMPLEMENT WARNING DIALOG
+        }
+            
+        //Create RecordModel objects by reading fields from the file
+        try {
+            //Find number of stored records in file by getting file length divided by size of each record
+            long numOfRecords = recordsAccess.length() / recordSize;
+            //Loop through all records in file
+            for(int i = 0; i < numOfRecords; i++) {
+                //Move pointer to beginning of record (i * 129)
+                recordsAccess.seek(i * recordSize);
+                
+                //Read product name, first 30 chars
+                String name = readString(recordsAccess, 30);
+                
+                //Read protein, carb and fat values
+                double protein = recordsAccess.readDouble();
+                double carb = recordsAccess.readDouble();
+                double fat = recordsAccess.readDouble();
+                
+                //Read category, nutrition category and favourite
+                String category = readString(recordsAccess, 15);
+                String nutrition = readString(recordsAccess, 7);
+                //Convert boolean favourite to String
+                String fave = "";
+                boolean favourite = false;
+                if(recordsAccess.readBoolean()) {
+                    favourite = true;
+                }
+                if(favourite) {
+                    fave = "Favourite";
+                } 
+                
+                //Add new RecordModel object to observable list
+                observableRecords.add(new RecordModel(name, protein, carb, fat,
+                category, nutrition, fave));
+            }
+        } catch(IOException e) {
+            //IMPLEMENT THIS
+        }
+        
+        //Place observable list in the table view
+        recordsTbl.setItems(observableRecords);
+        
+        //BUTTON EVENTS
+        
         //Menu btn takes user back to main menu
         menuBtn.setOnAction((ActionEvent event) -> {
             try {
@@ -74,6 +158,22 @@ public class ViewController implements Initializable {
                 logger.log(Level.SEVERE, "Failed to create new Window.", e);
             }
         });
-    }    
+    }   
+    
+    /**
+     * Method returns a string of characters from Random Access file of length based on supplied string size
+     * @param file Random Access File to read characters from
+     * @param size Amount of characters to extract
+     * @return String read from the file
+     * @throws IOException 
+     */
+    private String readString(RandomAccessFile file, int size) throws IOException {
+        String string = "";
+        for(int i = 0; i < size; i++){
+            string += file.readChar();
+        }
+        
+        return string;
+    }
     
 }
