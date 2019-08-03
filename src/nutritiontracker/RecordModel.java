@@ -82,5 +82,11 @@ public class RecordModel {
         this.favourite = favourite;
     }
     
+    @Override
+    public String toString() {
+        String string =  name + protein + carb + fat + category + nutrition + favourite;
+        return string;
+    }
+    
     
 }
