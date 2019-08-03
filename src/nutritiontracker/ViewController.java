@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +23,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
@@ -36,7 +41,7 @@ public class ViewController implements Initializable {
 
     //FXML variables
     @FXML
-    private Button menuBtn, searchBtn;
+    private Button menuBtn, searchBtn, nextBtn, prevBtn, favouriteBtn, deleteBtn;
     @FXML
     private TableView<RecordModel> recordsTbl;
     @FXML
@@ -80,48 +85,11 @@ public class ViewController implements Initializable {
         } catch(FileNotFoundException e) {
             //IMPLEMENT WARNING DIALOG
         }
+        
+        //Display records in the table view
+        populateTable(observableRecords);
+        recordsTbl.getSelectionModel().select(0);
             
-        //Create RecordModel objects by reading fields from the file
-        try {
-            //Find number of stored records in file by getting file length divided by size of each record
-            long numOfRecords = recordsAccess.length() / recordSize;
-            //Loop through all records in file
-            for(int i = 0; i < numOfRecords; i++) {
-                //Move pointer to beginning of record (i * 129)
-                recordsAccess.seek(i * recordSize);
-                
-                //Read product name, first 30 chars
-                String name = readString(recordsAccess, 30);
-                
-                //Read protein, carb and fat values
-                double protein = recordsAccess.readDouble();
-                double carb = recordsAccess.readDouble();
-                double fat = recordsAccess.readDouble();
-                
-                //Read category, nutrition category and favourite
-                String category = readString(recordsAccess, 15);
-                String nutrition = readString(recordsAccess, 7);
-                //Convert boolean favourite to String
-                String fave = "";
-                boolean favourite = false;
-                if(recordsAccess.readBoolean()) {
-                    favourite = true;
-                }
-                if(favourite) {
-                    fave = "Favourite";
-                } 
-                
-                //Add new RecordModel object to observable list
-                observableRecords.add(new RecordModel(name, protein, carb, fat,
-                category, nutrition, fave));
-            }
-        } catch(IOException e) {
-            //IMPLEMENT THIS
-        }
-        
-        //Place observable list in the table view
-        recordsTbl.setItems(observableRecords);
-        
         //BUTTON EVENTS
         
         //Menu btn takes user back to main menu
@@ -165,6 +133,60 @@ public class ViewController implements Initializable {
                 logger.log(Level.SEVERE, "Failed to create new Window.", e);
             }
         });
+        
+        //Select record before currently selected record
+        prevBtn.setOnAction((ActionEvent event) -> {
+            int currentSelection = recordsTbl.getSelectionModel().getSelectedIndex();
+            if(currentSelection != 0) {
+                recordsTbl.getSelectionModel().select(currentSelection - 1);
+            }
+        });
+        
+        //Select record after currently selected record
+        nextBtn.setOnAction((ActionEvent event) -> {
+            int currentSelection = recordsTbl.getSelectionModel().getSelectedIndex();
+            if(currentSelection < (observableRecords.size() - 1)) {
+                recordsTbl.getSelectionModel().select(currentSelection + 1);
+            }
+        });
+        
+        //Toggle favourite on/off of currently selected record
+        favouriteBtn.setOnAction((ActionEvent event) -> {
+            //Get product name of currently selected record
+            int recordIndex = recordsTbl.getSelectionModel().getSelectedIndex();
+            String product = recordsTbl.getSelectionModel().getSelectedItem().getName();
+            
+            //Get byte position of selected record in the file
+            int productPosition = findProductPosition(product);
+            
+            //Get current value of favourite field
+            boolean favouriteValue = getFavouriteValue(productPosition);
+            
+            //Edit favourite field value to opposit of current status
+            toggleFavourite(productPosition, favouriteValue);
+            
+            //Re-display updated records in the table with same record selected
+            populateTable(observableRecords);
+            recordsTbl.getSelectionModel().select(recordIndex);
+            
+        });
+        
+        //Delete celected record
+        deleteBtn.setOnAction((ActionEvent event) -> {
+            //Confirm action with the user
+            String title = "Delete record";
+            String header = "You're about to delete a record";
+            String content = "Are you sure you want to proceed?";
+            Optional<ButtonType> result = displayConfirmation(title, header, content);
+            
+            //If user confirms, proceed to delete the record
+            if(result.get() == ButtonType.OK) {
+                //Delete record and re-populate updated table
+                deleteRecord();
+                populateTable(observableRecords);
+
+            }
+        });
     }   
     
     /**
@@ -183,4 +205,197 @@ public class ViewController implements Initializable {
         return string;
     }
     
+    /**
+     * Method populates the table in view screen with records from the file
+     * @param observableRecords Observable list object to hold records
+     */
+    private void populateTable(ObservableList<RecordModel> observableRecords) {
+        //Clear list of records displayed previously
+        observableRecords.clear();
+        
+        //Create RecordModel objects by reading fields from the file
+        try {
+            //Find number of stored records in file by getting file length divided by size of each record
+            long numOfRecords = recordsAccess.length() / recordSize;
+            //Loop through all records in file
+            for(int i = 0; i < numOfRecords; i++) {
+                //Move pointer to beginning of record (i * 129)
+                recordsAccess.seek(i * recordSize);
+                
+                //Read product name, first 30 chars
+                String name = readString(recordsAccess, 30);
+                
+                //Read protein, carb and fat values
+                double protein = recordsAccess.readDouble();
+                double carb = recordsAccess.readDouble();
+                double fat = recordsAccess.readDouble();
+                
+                //Read category, nutrition category and favourite
+                String category = readString(recordsAccess, 15);
+                String nutrition = readString(recordsAccess, 7);
+                //Convert boolean favourite to String
+                String fave = "";
+                boolean favourite = false;
+                if(recordsAccess.readBoolean()) {
+                    favourite = true;
+                }
+                if(favourite) {
+                    fave = "Favourite";
+                } 
+                
+                //Add new RecordModel object to observable list
+                observableRecords.add(new RecordModel(name, protein, carb, fat,
+                category, nutrition, fave));
+            }
+        } catch(IOException e) {
+            //IMPLEMENT THIS
+        }
+        
+        //Place observable list in the table view
+        recordsTbl.setItems(observableRecords);
+
+    }
+    
+    /**
+     * Method returns the byte position of the currently selected record
+     * @param name Product name field of the record we're searching for
+     * @return Byte position of the record we're searching for
+     */
+    private int findProductPosition(String name) {
+        String readName = "";
+        try {
+            //Traverse through all product names in the file until a match is found
+            //to name supplied to method
+            for(int i = 0; i < recordsAccess.length(); i+=129) {
+                //Move cursor to begginning of each record
+                recordsAccess.seek(i);
+                //Read product name, first 30 chars
+                for(int j = 0; j < 30; j++) {
+                    readName += recordsAccess.readChar();
+                }
+                //If product name in the file matches supplied name, return cursor position
+                if(readName.equals(name)) {
+                    return i;                    
+                }
+
+                readName = "";
+            }
+        } catch(IOException e) {
+            //IMPLEMENT THIS
+        }
+
+        return 0;
+    }
+    
+    /**
+     * Method returns current value of the favourite field of the selected record
+     * @param position Byte position of currently selected record
+     * @return Value of the favourite field of the selected record
+     */
+    private boolean getFavouriteValue(int position) {
+        try {
+            //Move pointer to favourite field position in the record
+            recordsAccess.seek(position + 128);
+            //Return the value of favourite field
+            return recordsAccess.readBoolean();
+        } catch(IOException e) {
+            //IMPLEMENT THIS
+        }
+        
+        
+        return false;
+    }
+    
+    /**
+     * Method changes the favourite field value to opposite of current value of the 
+     * currently selected record
+     * @param position Byte position of currently selected record
+     * @param currentValue Current favourite field value
+     */
+    private void toggleFavourite(int position, boolean currentValue) {
+        //Set new value to opposit of current value
+        boolean newValue;
+        if(currentValue == false) {
+            newValue = true;
+        } else {
+            newValue = false;
+        }
+
+        try {
+            //Move file pointer to favourite field of currently selected record
+            recordsAccess.seek(position + 128);
+            //Overwrite favourite field value to new value
+            recordsAccess.writeBoolean(newValue);
+        } catch(IOException e) {
+            //IMPLEMENT THIS
+        }
+    }
+    
+    /**
+     * Method displays a confirmation pop-ip window and returns user's selection
+     * @param title String to display as title of pop-up window
+     * @param header String to display as header of pop-up window
+     * @param content String to display as content of pop-up window
+     * @return Button value of user's selection
+     */
+    private Optional<ButtonType> displayConfirmation(String title, String header, String content) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        
+        return alert.showAndWait();
+    }
+    
+    /**
+     * Method deletes currently selected record from the file
+     */
+    private void deleteRecord() {
+        //Variables for the method
+        String name, category, nutCategory;
+        double protein, carb, fat;
+        boolean favourite;
+        ArrayList<RecordModel> tempRecords = new ArrayList<>();
+        
+        try {
+            long numOfRecords = recordsAccess.length() / 129;
+            recordsAccess.seek(0);
+            //Add all records from the file into a temporary array list
+            for(int i = 0; i < numOfRecords; i++) {
+                name = readString(recordsAccess, 30);
+                protein = recordsAccess.readDouble();
+                carb = recordsAccess.readDouble();
+                fat = recordsAccess.readDouble();
+                category = readString(recordsAccess, 15);
+                nutCategory = readString(recordsAccess, 7);
+                favourite = recordsAccess.readBoolean();
+                
+                tempRecords.add(new RecordModel(name, protein, carb, fat,
+                category, nutCategory, favourite+""));
+            }
+            
+            //Remove currently selected record from the array list
+            int recordToRemove = recordsTbl.getSelectionModel().getSelectedIndex();
+            tempRecords.remove(recordToRemove);
+            
+            //Remove all records from the file
+            recordsAccess.setLength(0);
+            recordsAccess.seek(0);
+            
+            //Repopulate the file with all remaining records
+            for(int i = 0; i < (numOfRecords - 1); i++) {
+                recordsAccess.writeChars(tempRecords.get(i).getName());
+                recordsAccess.writeDouble(tempRecords.get(i).getProtein());
+                recordsAccess.writeDouble(tempRecords.get(i).getCarb());
+                recordsAccess.writeDouble(tempRecords.get(i).getFat());
+                recordsAccess.writeChars(tempRecords.get(i).getCategory());
+                recordsAccess.writeChars(tempRecords.get(i).getNutrition());
+                recordsAccess.writeBoolean(Boolean.parseBoolean(tempRecords.get(i).getFavourite()));
+            }
+                        
+        } catch(IOException e) {
+            //IMPLEMENT THIS
+        }
+        
+    }
 }
