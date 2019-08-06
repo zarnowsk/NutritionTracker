@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox styleClass="mainWindow" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nutritiontracker.EditController">
+    <HBox>
+        <Button fx:id="cancelBtn" text="Cancel" />
+        <Label id="mainLabel" text="Edit Product" />
+    </HBox>
+    <GridPane styleClass="interactionArea">
+        <Label text="Name" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="nameTxt" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+        
+        <Label text="Protein (in 100g)" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <TextField fx:id="proteinTxt" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+        
+        <Label text="Carbs (in 100g)" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        <TextField fx:id="carbTxt" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+        
+        <Label text="Fat (in 100g)" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+        <TextField fx:id="fatTxt" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+        
+        <Label text="Category" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+        <ComboBox fx:id="categoryCmb" promptText="Select a category" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+       
+    </GridPane>
+    <VBox styleClass="btnArea">
+        <Button fx:id="saveBtn" text="Save" defaultButton="true" />
+    </VBox>
+    
+    <stylesheets>
+        <URL value="@css/editCss.css" />
+    </stylesheets>
+</VBox>
