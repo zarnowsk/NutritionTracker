@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -41,7 +41,7 @@ public class ViewController implements Initializable {
 
     //FXML variables
     @FXML
-    private Button menuBtn, searchBtn, nextBtn, prevBtn, favouriteBtn, deleteBtn;
+    private Button menuBtn, searchBtn, nextBtn, prevBtn, favouriteBtn, deleteBtn, editBtn;
     @FXML
     private TableView<RecordModel> recordsTbl;
     @FXML
@@ -54,6 +54,7 @@ public class ViewController implements Initializable {
     private static File recordsFile = new File("nutritionRecords.dat");
     private static RandomAccessFile recordsAccess; 
     private int recordSize = 129; //Record size in bytes
+    private static ObservableList<RecordModel> observableRecords;
     
     /**
      * Initializes the controller class.
@@ -61,7 +62,7 @@ public class ViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Initialize observable list
-        ObservableList<RecordModel> observableRecords = FXCollections.observableArrayList();
+        observableRecords = FXCollections.observableArrayList();
         
         //Initialize columns in Table View
         col1.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -87,7 +88,7 @@ public class ViewController implements Initializable {
         }
         
         //Display records in the table view
-        populateTable(observableRecords);
+        populateTable();
         recordsTbl.getSelectionModel().select(0);
             
         //BUTTON EVENTS
@@ -166,7 +167,7 @@ public class ViewController implements Initializable {
             toggleFavourite(productPosition, favouriteValue);
             
             //Re-display updated records in the table with same record selected
-            populateTable(observableRecords);
+            populateTable();
             recordsTbl.getSelectionModel().select(recordIndex);
             
         });
@@ -183,8 +184,39 @@ public class ViewController implements Initializable {
             if(result.get() == ButtonType.OK) {
                 //Delete record and re-populate updated table
                 deleteRecord();
-                populateTable(observableRecords);
-
+                populateTable();
+            }
+        });
+        
+        //Edit record
+        editBtn.setOnAction((ActionEvent event) -> {
+            //Open a new window for editing records
+            try {
+                //Get current window from the btn element and close it
+                Stage stage = (Stage)editBtn.getScene().getWindow();
+                stage.close();
+                //Creeate new window and display it
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("EditFXML.fxml"));
+                Scene editScene = new Scene(fxmlLoader.load(), 500, 350);
+                Stage editStage = new Stage();
+                editStage.initStyle(StageStyle.UNDECORATED);
+                editStage.setResizable(false);
+                editStage.setTitle("Edit Product");
+                editStage.setScene(editScene);
+                editStage.show();
+                
+                //Get controller of edit window
+                EditController editController = fxmlLoader.getController();
+                //Pass selected record to edit controller
+                int recordToPassIndex = recordsTbl.getSelectionModel().getFocusedIndex();
+                RecordModel recordToPass = getRecordsAsList().get(recordToPassIndex);
+                int editedRecordPosition = findProductPosition(recordsTbl.getSelectionModel().getSelectedItem().getName());
+                editController.passRecord(recordToPass, editedRecordPosition);
+                                
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Failed to create new Window.", e);
             }
         });
     }   
@@ -209,7 +241,7 @@ public class ViewController implements Initializable {
      * Method populates the table in view screen with records from the file
      * @param observableRecords Observable list object to hold records
      */
-    private void populateTable(ObservableList<RecordModel> observableRecords) {
+    protected void populateTable() {
         //Clear list of records displayed previously
         observableRecords.clear();
         
@@ -301,8 +333,6 @@ public class ViewController implements Initializable {
         } catch(IOException e) {
             //IMPLEMENT THIS
         }
-        
-        
         return false;
     }
     
@@ -348,9 +378,10 @@ public class ViewController implements Initializable {
     }
     
     /**
-     * Method deletes currently selected record from the file
+     * Method returns all records as an array list of RecordModel type.
+     * @return ArrayList containing RecordModel variables
      */
-    private void deleteRecord() {
+    private ArrayList<RecordModel> getRecordsAsList() {
         //Variables for the method
         String name, category, nutCategory;
         double protein, carb, fat;
@@ -373,7 +404,22 @@ public class ViewController implements Initializable {
                 tempRecords.add(new RecordModel(name, protein, carb, fat,
                 category, nutCategory, favourite+""));
             }
-            
+        } catch(IOException e) {
+            //IMPLEMENT THIS
+        }
+        
+        return tempRecords;
+    }
+    
+    /**
+     * Method deletes currently selected record from the file
+     */
+    private void deleteRecord() {
+        //Use method to obtain all records as array list
+        ArrayList<RecordModel> tempRecords = getRecordsAsList();
+        int numOfRecords = tempRecords.size();
+      
+        try {
             //Remove currently selected record from the array list
             int recordToRemove = recordsTbl.getSelectionModel().getSelectedIndex();
             tempRecords.remove(recordToRemove);
@@ -396,6 +442,5 @@ public class ViewController implements Initializable {
         } catch(IOException e) {
             //IMPLEMENT THIS
         }
-        
     }
 }
