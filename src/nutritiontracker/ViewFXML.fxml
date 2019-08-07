@@ -35,8 +35,8 @@
             <Button fx:id="sortBtn" text="Sort" />
             <Button fx:id="editBtn" text="Edit" />
             <Button fx:id="deleteBtn" text="Delete" />
-            <Button fx:id="nextBtn" text="Next" />
             <Button fx:id="prevBtn" text="Prev" />
+            <Button fx:id="nextBtn" text="Next" />
             <Button fx:id="searchBtn" text="Search" />
             <Button fx:id="favouriteBtn" text="Favourite" />
         </VBox>
