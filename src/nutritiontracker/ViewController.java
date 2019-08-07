@@ -108,6 +108,8 @@ public class ViewController implements Initializable {
                 stage.setTitle("Nutrition Tracker");
                 stage.setScene(mainMenuScene);
                 stage.show();
+                
+                recordsAccess.close();
             } catch (IOException e) {
                 Logger logger = Logger.getLogger(getClass().getName());
                 logger.log(Level.SEVERE, "Failed to create new Window.", e);
@@ -129,6 +131,8 @@ public class ViewController implements Initializable {
                 stage.setTitle("Nutrition Tracker");
                 stage.setScene(searchScene);
                 stage.show();
+                
+                recordsAccess.close();
             } catch (IOException e) {
                 Logger logger = Logger.getLogger(getClass().getName());
                 logger.log(Level.SEVERE, "Failed to create new Window.", e);
