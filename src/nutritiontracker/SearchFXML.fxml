@@ -22,6 +22,9 @@
     <VBox styleClass="btnArea">
         <Button fx:id="searchBtn" text="Search" defaultButton="true" />
     </VBox>
+    <VBox styleClass="resultArea">
+        <Label fx:id="resultLbl" />
+    </VBox>
     
     <stylesheets>
         <URL value="@css/searchCss.css" />
