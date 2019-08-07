@@ -10,6 +10,8 @@ and open the template in the editor.
 
 .mainWindow {
     -fx-background-color: #59b7ff;
+    -fx-border-color: #c4271b ;
+    -fx-border-width: 3 ;
 }
 
 .interactionArea {
