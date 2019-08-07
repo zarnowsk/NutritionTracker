@@ -54,3 +54,12 @@ Button:hover {
 .btnArea {
     -fx-alignment: center;
 }
+
+.resultArea {
+    -fx-alignment: center;
+}
+
+.resultArea Label{
+    -fx-text-fill: white;
+    -fx-font-size: 15pt;
+}
