@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 
 /**
  * FXML Controller class
- *
+ * This class represents the controller of the edit record window
  * @author Michal Zarnowski
  */
 public class AddController implements Initializable {
