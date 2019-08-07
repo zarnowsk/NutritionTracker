@@ -211,6 +211,13 @@ public class AddController implements Initializable {
         else return "N/A";
     }
     
+    /**
+     * Method resizes an input string to specified size by either padding the string with white spaces or cutting the
+     * string down to appropriate length.
+     * @param string Input string to be resized
+     * @param size Final size of the string
+     * @return Resized string
+     */
     private String resizeString(String string, int size) {
         int strLength = string.length();
         
@@ -229,12 +236,17 @@ public class AddController implements Initializable {
         }
     }
     
+    /**
+     * Method clears all data from input fields and resets focus to first field.
+     */
     private void clearFields() {
         nameTxt.clear();
         proteinTxt.clear();
         carbTxt.clear();
         fatTxt.clear();
         categoryCmb.getSelectionModel().clearSelection();
+        
+        nameTxt.requestFocus();
     }
 }
 
