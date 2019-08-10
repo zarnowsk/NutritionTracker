@@ -32,9 +32,45 @@ Button:hover {
 #mainLabel {
     -fx-text-fill: white;
     -fx-font-size: 25pt;
-    -fx-padding: 0 0 0 80px;
+    -fx-padding: 0 0 0 130px;
 }
 
 .text-area {
     -fx-pref-height: 500px;
+    -fx-background-insets: 0;
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area:focused {
+    -fx-highlight-fill: #7ecfff;
+}
+
+.text-area .content {
+    -fx-padding: 10px;
+    -fx-text-fill: gray;
+    -fx-highlight-fill: #7ecfff;
+}
+
+#categoryTxt {
+    -fx-pref-width: 175px;
+}
+#productTxt {
+    -fx-pref-width: 145px;
+}
+#proteinTxt {
+    -fx-pref-width: 60px;
+}
+#carbTxt {
+    -fx-pref-width: 60px;
+}
+#fatTxt {
+    -fx-pref-width: 70px;
 }
