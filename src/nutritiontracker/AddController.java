@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -88,6 +89,7 @@ public class AddController implements Initializable {
         addBtn.setOnAction((ActionEvent event) -> {
             //Vars to be saved
             boolean validNutrition = true; //if all nutrition values are valid
+            boolean validRecord = true;
             String name = "", category = "", nutritionCategory = "";
             double protein = 0, carb = 0, fat = 0;
             
@@ -103,19 +105,33 @@ public class AddController implements Initializable {
             if(nameTxt.getText().length() > 0) {
                 name = resizeString(nameTxt.getText(), nameStringSize);
             } else {
-                //IMPLELEMENT VALIDATION FOR EMPTY FIELD
+                displayError("Invalid product", "Product name cannot be empty");
+                validRecord = false;
             }
             
             //PROTEIN VALUE
             if(proteinTxt.getText().length() > 0) {
                 try {
                     protein = Double.parseDouble(proteinTxt.getText());
+                    if(protein < 0) {
+                        if(validRecord) {
+                            displayError("Invalid product", "Protein amount must be more than 0.0");
+                            validRecord = false;
+                        }
+                        validNutrition = false;
+                    }
                 } catch(NumberFormatException e) {
-                    //IMPLEMENT VALIDATION FOR NO DOUBLE
+                    if(validRecord) {
+                        displayError("Invalid product", "Protein amount must be a valid number");
+                        validRecord = false;
+                    }
                     validNutrition = false;
                 }
             } else {
-                //IMPLELEMENT VALIDATION FOR EMPTY FIELD
+                if(validRecord) {
+                    displayError("Invalid product", "Protein amount must be a valid number");
+                    validRecord = false;
+                }
                 validNutrition = false;
             }
             
@@ -123,12 +139,25 @@ public class AddController implements Initializable {
             if(carbTxt.getText().length() > 0) {
                 try {
                     carb = Double.parseDouble(carbTxt.getText());
+                    if(carb < 0) {
+                        if(validRecord) {
+                            displayError("Invalid product", "Carb amount must be more than 0.0");
+                            validRecord = false;
+                        }
+                        validNutrition = false;
+                    }
                 } catch(NumberFormatException e) {
-                    //IMPLEMENT VALIDATION FOR NO DOUBLE
+                    if(validRecord) {
+                        displayError("Invalid product", "Carb amount must be a valid number");
+                        validRecord = false;
+                    }
                     validNutrition = false;
                 }
             } else {
-                //IMPLELEMENT VALIDATION FOR EMPTY FIELD
+                if(validRecord) {
+                    displayError("Invalid product", "Carb amount must be a valid number");
+                    validRecord = false;
+                }
                 validNutrition = false;
             }
             
@@ -136,20 +165,43 @@ public class AddController implements Initializable {
             if(fatTxt.getText().length() > 0) {
                 try {
                     fat = Double.parseDouble(fatTxt.getText());
+                    if(fat < 0) {
+                        if(validRecord) {
+                            displayError("Invalid product", "Fat amount must be more than 0.0");
+                            validRecord = false;
+                        }
+                        validNutrition = false;
+                    }
                 } catch(NumberFormatException e) {
-                    //IMPLEMENT VALIDATION FOR NO DOUBLE
+                    if(validRecord) {
+                        displayError("Invalid product", "Fat amount must be a valid number");
+                        validRecord = false;
+                    }
                     validNutrition = false;
                 }
             } else {
-                //IMPLELEMENT VALIDATION FOR EMPTY FIELD
+                if(validRecord) {
+                    displayError("Invalid product", "Fat amount must be a valid number");
+                    validRecord = false;
+                }
                 validNutrition = false;
             }
             
             //CATEGORY
             try {
-                category = resizeString(categoryCmb.getSelectionModel().getSelectedItem(), 15);
+                if(categoryCmb.getSelectionModel().getSelectedIndex() >= 0) {
+                    category = resizeString(categoryCmb.getSelectionModel().getSelectedItem(), 15);
+                } else {
+                    if(validRecord) {
+                        displayError("Invalid product", "You must select a category");
+                        validRecord = false;
+                    }
+                }
             } catch(NumberFormatException e) {
-                //IMPLEMENT VALIDATION FOR COMBO BOX
+                if(validRecord) {
+                        displayError("Invalid product", "You must select a category");
+                        validRecord = false;
+                }
             }
             
             //NUTRITION CATEGORY
@@ -161,34 +213,36 @@ public class AddController implements Initializable {
             boolean favourite = false; //always save default value
             
             //Save record to file
-            try {
-                //Move file pointer to end of file
-                recordsAccess.seek(recordsAccess.length());
-
-                //Add fields
-                recordsAccess.writeChars(name);
-                recordsAccess.writeDouble(protein);
-                recordsAccess.writeDouble(carb);
-                recordsAccess.writeDouble(fat);
-                recordsAccess.writeChars(category);
-                recordsAccess.writeChars(nutritionCategory);
-                recordsAccess.writeBoolean(favourite);
+            if(validRecord) {
+                try {
+                    //Move file pointer to end of file
+                    recordsAccess.seek(recordsAccess.length());
+                    
+                    //Add fields
+                    recordsAccess.writeChars(name);
+                    recordsAccess.writeDouble(protein);
+                    recordsAccess.writeDouble(carb);
+                    recordsAccess.writeDouble(fat);
+                    recordsAccess.writeChars(category);
+                    recordsAccess.writeChars(nutritionCategory);
+                    recordsAccess.writeBoolean(favourite);
                 
-                //Close stream
-                recordsAccess.close();
+                    //Close stream
+                    recordsAccess.close();
                 
-                //Clear all input fields
-                clearFields();
+                    //Clear all input fields
+                    clearFields();
                 
-                //Display confirmation dialog
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Record Saved");
-                alert.setHeaderText(null);
-                alert.setContentText("Record has been saved successfully");
-                alert.showAndWait();
+                    //Display confirmation dialog
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Record Saved");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Record has been saved successfully");
+                    alert.showAndWait();
                 
-            } catch(IOException e) {
-                //IMPLEMENT THIS
+                } catch(IOException e) {
+                    //IMPLEMENT THIS
+                }
             }
 
         });
@@ -247,6 +301,13 @@ public class AddController implements Initializable {
         categoryCmb.getSelectionModel().clearSelection();
         
         nameTxt.requestFocus();
+    }
+    
+    public void displayError(String title, String header) {
+        Alert dialog = new Alert(AlertType.ERROR);
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.show();
     }
 }
 
