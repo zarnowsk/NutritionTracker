@@ -1,7 +1,7 @@
 package nutritiontracker;
 
 /**
- * This class represents a record object obtained from readable file for purpouse 
+ * This class represents a record object obtained from readable file for purpose 
  * of populating TableView on View screen
  * @author Michal Zarnowski
  */
@@ -15,6 +15,9 @@ public class RecordModel {
     private String nutrition;
     private String favourite;
     
+    /**
+     * Constructor which takes in data for all fields 
+     */
     public RecordModel(String name, double protein, double carb, double fat, 
             String category, String nutrition, String favourite) {
         this.name = name;
@@ -26,6 +29,7 @@ public class RecordModel {
         this.favourite = favourite;
     }
 
+    //Accessors and mutators
     public String getName() {
         return name;
     }
