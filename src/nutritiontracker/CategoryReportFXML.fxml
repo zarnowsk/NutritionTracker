@@ -14,7 +14,13 @@
     </VBox>
     <BorderPane styleClass="interactionArea">
         <center>
-            <TextArea fx:id="reportTxt" />
+            <HBox>
+                <TextArea fx:id="categoryTxt" />                
+                <TextArea fx:id="productTxt" />                
+                <TextArea fx:id="proteinTxt" />                
+                <TextArea fx:id="carbTxt" />                
+                <TextArea fx:id="fatTxt" />                
+            </HBox>
         </center>
     </BorderPane>
 
