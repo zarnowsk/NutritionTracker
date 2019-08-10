@@ -33,7 +33,7 @@ public class CategoryReportController implements Initializable {
     @FXML
     private Button menuBtn;
     @FXML
-    private TextArea reportTxt;
+    private TextArea categoryTxt, productTxt, proteinTxt, carbTxt, fatTxt;
     
     private File recordsFile = new File("nutritionRecords.dat");
     private static RandomAccessFile recordsAccess; 
@@ -191,58 +191,32 @@ public class CategoryReportController implements Initializable {
     }
     
     private void displayRecords(ArrayList<ArrayList<RecordModel>> records) {
-        String displayString = "";
+        String displayCategoryString = "Category\n\n", displayProductString = "Product\n\n",
+                displayProteinString = "Protein\n\n", displayCarbString = "Carbs\n\n", displayFatString = "Fat\n\n";
         
         for(int i = 0; i < records.size(); i++){
             ArrayList<RecordModel> category = records.get(i);
             for(int j = 0; j < category.size(); j++) {
                 RecordModel record = category.get(j);
-                displayString += formatRecord(record) + "\n";
+                displayCategoryString += record.getCategory().trim() + "\n";
+                displayProductString += record.getName().trim() + "\n";
+                displayProteinString += record.getProtein() + "\n";
+                displayCarbString += record.getCarb() + "\n";
+                displayFatString += record.getFat() + "\n";
             }
-            if(category.size() > 0)
-                displayString += "\n";
+            if(category.size() > 0) {
+                displayCategoryString += "\n";
+                displayProductString += "\n";
+                displayProteinString += "\n";
+                displayCarbString += "\n";
+                displayFatString += "\n";
+            }
         }
-        reportTxt.setText(displayString);
-    }
-    
-    private String formatRecord(RecordModel record) {
-        String recordString = "";
-        int spaces;
-        
-        recordString += record.getCategory().trim();
-        spaces = 20 - record.getCategory().trim().length();
-        for(int i = 0; i < spaces; i++){
-            recordString += " ";
-        }
-        
-        recordString += record.getName().trim();
-        spaces = 30 - record.getName().trim().length();
-        for(int i = 0; i < spaces; i++){
-            recordString += " ";
-        }
-        
-        String protein = record.getProtein() + "";
-        recordString += protein;
-        spaces = 10 - protein.length();
-        for(int i = 0; i < spaces; i++){
-            recordString += " ";
-        }
-        
-        String carb = record.getCarb() + "";
-        recordString += carb;
-        spaces = 10 - carb.length();
-        for(int i = 0; i < spaces; i++){
-            recordString += " ";
-        }
-        
-        String fat = record.getFat() + "";
-        recordString += fat;
-        spaces = 10 - fat.length();
-        for(int i = 0; i < spaces; i++){
-            recordString += " ";
-        }
-        
-        return recordString;
+        categoryTxt.setText(displayCategoryString);
+        productTxt.setText(displayProductString);
+        proteinTxt.setText(displayProteinString);
+        carbTxt.setText(displayCarbString);
+        fatTxt.setText(displayFatString);
     }
     
 }
