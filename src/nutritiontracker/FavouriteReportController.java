@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package nutritiontracker;
 
 import java.io.File;
@@ -24,17 +20,19 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * FXML Controller class in charge of the Favourite Report Window
  *
  * @author Michal Zarnowski
  */
 public class FavouriteReportController implements Initializable {
 
+    //FXML variables
     @FXML
     private Button menuBtn;
     @FXML
     private TextArea categoryTxt, productTxt, proteinTxt, carbTxt, fatTxt;
     
+    //Controlle variables
     private File recordsFile = new File("nutritionRecords.dat");
     private static RandomAccessFile recordsAccess; 
     private int recordSize = 129; //Record size in bytes
