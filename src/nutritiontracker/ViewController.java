@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package nutritiontracker;
 
 import java.io.File;
@@ -33,7 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.StageStyle;
 
 /**
- * FXML Controller class
+ * FXML Controller class in charge of the View Window
  *
  * @author Michal Zarnowski
  */
