@@ -102,7 +102,7 @@ public class MainMenuController implements Initializable {
                 //Creeate new window and display it
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("CategoryReportFXML.fxml"));
-                Scene searchScene = new Scene(fxmlLoader.load(), 400, 550);
+                Scene searchScene = new Scene(fxmlLoader.load(), 500, 550);
                 stage = new Stage();
                 stage.setResizable(false);
                 stage.setTitle("Nutrition Tracker");
