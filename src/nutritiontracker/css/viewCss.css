@@ -26,7 +26,7 @@ Button:hover {
 #mainLabel {
     -fx-text-fill: white;
     -fx-font-size: 25pt;
-    -fx-padding: 5px 0 0 150px;
+    -fx-padding: 5px 0 70px 150px;
 }
 
 Label {
