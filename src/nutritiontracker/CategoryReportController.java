@@ -26,11 +26,13 @@ import javafx.stage.Stage;
  */
 public class CategoryReportController implements Initializable {
 
+    //FXML variables
     @FXML
     private Button menuBtn;
     @FXML
     private TextArea categoryTxt, productTxt, proteinTxt, carbTxt, fatTxt;
     
+    //Controller variables
     private File recordsFile = new File("nutritionRecords.dat");
     private static RandomAccessFile recordsAccess; 
     private int recordSize = 129; //Record size in bytes
