@@ -31,6 +31,10 @@
                 <Button fx:id="nutBasedBtn" text="Nutrition Based" GridPane.rowIndex="3" GridPane.columnIndex="1" />
             </children>
         </GridPane>
+        
+        <GridPane alignment="CENTER">
+            <Label id="copyrightsLabel" text="All Copyrights Reserved, Michal Zarnowski" />            
+        </GridPane>
     
     <stylesheets>
         <URL value="@css/mainCss.css" />
