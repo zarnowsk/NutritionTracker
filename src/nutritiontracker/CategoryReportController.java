@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package nutritiontracker;
 
 import java.io.File;
@@ -24,7 +20,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * FXML Controller class in charge of Category Report window
  *
  * @author Michal Zarnowski
  */
@@ -84,6 +80,10 @@ public class CategoryReportController implements Initializable {
         });
     }   
     
+    /**
+     * Method reads in the data from the file and converts it to an Array List of records
+     * @return Array List containing records
+     */
     private ArrayList<RecordModel> getRecordsAsArray(){
         ArrayList<RecordModel> records = new ArrayList<>();
         
@@ -144,6 +144,12 @@ public class CategoryReportController implements Initializable {
         return string;
     }
     
+    /**
+     * Method converts an Array List holding records into multiple Array Lists, one for each possible product
+     * category.
+     * @param records Array List holding all the records
+     * @return Array List holding multiple Array Lists of each product category
+     */
     private ArrayList<ArrayList<RecordModel>> sortRecordsIntoCategories(ArrayList<RecordModel> records) {
         //Create separate array lists for each available product category
         ArrayList<RecordModel> meatCat = new ArrayList<>();
@@ -190,20 +196,29 @@ public class CategoryReportController implements Initializable {
         return sortedRecords;
     }
     
+    /**
+     * Method displays all records from all Array Lists in appropriate Text Areas
+     * @param records Array List holding all records
+     */
     private void displayRecords(ArrayList<ArrayList<RecordModel>> records) {
+        //Initialize column headers
         String displayCategoryString = "Category\n\n", displayProductString = "Product\n\n",
                 displayProteinString = "Protein\n\n", displayCarbString = "Carbs\n\n", displayFatString = "Fat\n\n";
         
+        //Cycle through each Array List containing products of specific categories
         for(int i = 0; i < records.size(); i++){
             ArrayList<RecordModel> category = records.get(i);
+            //Cycle through all records in the category
             for(int j = 0; j < category.size(); j++) {
                 RecordModel record = category.get(j);
+                //Add record data to appropriate String
                 displayCategoryString += record.getCategory().trim() + "\n";
                 displayProductString += record.getName().trim() + "\n";
                 displayProteinString += record.getProtein() + "\n";
                 displayCarbString += record.getCarb() + "\n";
                 displayFatString += record.getFat() + "\n";
             }
+            //White space formatting
             if(category.size() > 0) {
                 displayCategoryString += "\n";
                 displayProductString += "\n";
@@ -212,6 +227,7 @@ public class CategoryReportController implements Initializable {
                 displayFatString += "\n";
             }
         }
+        //DIsplay columns
         categoryTxt.setText(displayCategoryString);
         productTxt.setText(displayProductString);
         proteinTxt.setText(displayProteinString);
