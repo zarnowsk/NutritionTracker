@@ -29,6 +29,12 @@ Button:hover {
     -fx-padding: 50px 0;
 }
 
+#copyrightsLabel {
+    -fx-text-fill: grey;
+    -fx-font-size: 10pt;
+    -fx-padding: 165px 0 0 0;
+}
+
 Label {
     -fx-text-fill: white;
     -fx-font-size: 20pt;
