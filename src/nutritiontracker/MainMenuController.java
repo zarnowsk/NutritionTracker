@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package nutritiontracker;
 
 import java.io.IOException;
@@ -16,15 +12,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-/**
+/** Controller class in charge of the Main Menu window
  *
  * @author Michal Zarnowski
  */
 public class MainMenuController implements Initializable {
     
+    //FXML variables
     @FXML
     private Button viewBtn, addBtn, searchBtn, catBasedBtn, favBtn, nutBasedBtn;
     
