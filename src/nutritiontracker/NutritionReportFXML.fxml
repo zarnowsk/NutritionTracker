@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox styleClass="mainWindow" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nutritiontracker.NutritionReportController">
+    <VBox>
+        <Button fx:id="menuBtn" text="Main Menu" />
+        <Label id="mainLabel" text="Nutrition Report" />
+    </VBox>
+    <BorderPane styleClass="interactionArea">
+        <center>
+            <HBox>
+                <TextArea fx:id="categoryTxt" />                
+                <TextArea fx:id="productTxt" />                
+                <TextArea fx:id="proteinTxt" />                
+                <TextArea fx:id="carbTxt" />                
+                <TextArea fx:id="fatTxt" />                
+            </HBox>
+        </center>
+    </BorderPane>
+
+    <stylesheets>
+        <URL value="@css/nutritionReportCss.css" />
+    </stylesheets>
+</VBox>
