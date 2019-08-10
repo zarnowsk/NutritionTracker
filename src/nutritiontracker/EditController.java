@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -57,32 +58,124 @@ public class EditController implements Initializable {
         
         //Save record to file
         saveBtn.setOnAction((ActionEvent event) -> {
-            //Get values from entry fields
-            String newProduct = resizeString(nameTxt.getText(), 30);
-            String newProtein = proteinTxt.getText();
-            String newCarb = carbTxt.getText();
-            String newFat = fatTxt.getText();
-            String newCategory = resizeString(categoryCmb.getSelectionModel().getSelectedItem() + "", 15);
-            String newNutritionCategory = resizeString(getNutritionCategory(), 7);
+            boolean validRecord = true, validNutrition = true;
             
-            //Save edited record into the file
-            try {
-                recordsAccess.writeChars(newProduct);
-                recordsAccess.writeDouble(Double.parseDouble(newProtein));
-                recordsAccess.writeDouble(Double.parseDouble(newCarb));
-                recordsAccess.writeDouble(Double.parseDouble(newFat));
-                recordsAccess.writeChars(newCategory);
-                recordsAccess.writeChars(newNutritionCategory);
-                recordsAccess.writeBoolean(Boolean.parseBoolean(favourite));
-                
-                //Close the stream
-                recordsAccess.close();
-            } catch(IOException e) {
-                
+            //Get values from entry fields and validate
+            String newProduct = nameTxt.getText();
+            if(newProduct.length() > 0) {
+                newProduct = resizeString(nameTxt.getText(), 30);
+            } else {
+                displayError("Invalid product", "Product name cannot be empty");
+                validRecord = false;
             }
             
-            //Return to View Records screen
-            goBack();
+            String newProteinTxt = proteinTxt.getText();
+            Double newProtein = 0.0;
+            if(newProteinTxt.length() > 0) {
+                try {
+                    newProtein = Double.parseDouble(newProteinTxt);
+                    if(newProtein < 0) {
+                        if(validRecord) {
+                            displayError("Invalid product", "Protein amount must be more than 0.0");
+                            validRecord = false;
+                        }
+                        validNutrition = false;
+                    }
+                } catch(NumberFormatException e) {
+                    if(validRecord) {
+                        displayError("Invalid product", "Protein amount must be a valid number");
+                        validRecord = false;
+                    }
+                    validNutrition = false;
+                }
+            } else {
+                if(validRecord) {
+                    displayError("Invalid product", "Protein amount must be a valid number");
+                    validRecord = false;
+                }
+                validNutrition = false;
+            }
+            
+            String newCarbTxt = carbTxt.getText();
+            Double newCarb = 0.0;
+            if(newCarbTxt.length() > 0) {
+                try {
+                    newCarb = Double.parseDouble(newCarbTxt);
+                    if(newCarb < 0) {
+                        if(validRecord) {
+                            displayError("Invalid product", "Carb amount must be more than 0.0");
+                            validRecord = false;
+                        }
+                        validNutrition = false;
+                    }
+                } catch(NumberFormatException e) {
+                    if(validRecord) {
+                        displayError("Invalid product", "Carb amount must be a valid number");
+                        validRecord = false;
+                    }
+                    validNutrition = false;
+                }
+            } else {
+                if(validRecord) {
+                    displayError("Invalid product", "Carb amount must be a valid number");
+                    validRecord = false;
+                }
+                validNutrition = false;
+            }
+            
+            String newFatTxt = fatTxt.getText();
+            Double newFat = 0.0;
+            if(newFatTxt.length() > 0) {
+                try {
+                    newFat = Double.parseDouble(newFatTxt);
+                    if(newFat < 0) {
+                        if(validRecord) {
+                            displayError("Invalid product", "Fat amount must be more than 0.0");
+                            validRecord = false;
+                        }
+                        validNutrition = false;
+                    }
+                } catch(NumberFormatException e) {
+                    if(validRecord) {
+                        displayError("Invalid product", "Fat amount must be a valid number");
+                        validRecord = false;
+                    }
+                    validNutrition = false;
+                }
+            } else {
+                if(validRecord) {
+                    displayError("Invalid product", "Fat amount must be a valid number");
+                    validRecord = false;
+                }
+                validNutrition = false;
+            }
+            
+            String newCategory = resizeString(categoryCmb.getSelectionModel().getSelectedItem() + "", 15);
+            String newNutritionCategory = "";
+            if(validNutrition) {
+                newNutritionCategory = resizeString(getNutritionCategory(), 7);
+            }
+            
+            //Save edited record into the file
+            if(validRecord) {
+                try {
+                    recordsAccess.writeChars(newProduct);
+                    recordsAccess.writeDouble(newProtein);
+                    recordsAccess.writeDouble(newCarb);
+                    recordsAccess.writeDouble(newFat);
+                    recordsAccess.writeChars(newCategory);
+                    recordsAccess.writeChars(newNutritionCategory);
+                    recordsAccess.writeBoolean(Boolean.parseBoolean(favourite));
+                    
+                    //Close the stream
+                    recordsAccess.close();
+                } catch(IOException e) {
+                    
+                }
+                
+                //Return to View Records screen
+                goBack();
+            }
         });
     }  
     
@@ -180,6 +273,13 @@ public class EditController implements Initializable {
             Logger logger = Logger.getLogger(getClass().getName());
             logger.log(Level.SEVERE, "Failed to create new Window.", e);
         }                               
+    }
+    
+     public void displayError(String title, String header) {
+        Alert dialog = new Alert(Alert.AlertType.ERROR);
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.show();
     }
     
 }
