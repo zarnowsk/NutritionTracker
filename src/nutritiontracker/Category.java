@@ -2,7 +2,7 @@
 package nutritiontracker;
 
 /**
- * Enum class to model Category of product in the program.
+ * Enumeration class to model Category of product in the program.
  * @author Michal Zarnowski
  */
 public enum Category {
