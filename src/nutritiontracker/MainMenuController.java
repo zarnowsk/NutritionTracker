@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 public class MainMenuController implements Initializable {
     
     @FXML
-    private Button viewBtn, addBtn, searchBtn, catBasedBtn;
+    private Button viewBtn, addBtn, searchBtn, catBasedBtn, favBtn, nutBasedBtn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -102,6 +102,48 @@ public class MainMenuController implements Initializable {
                 //Creeate new window and display it
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("CategoryReportFXML.fxml"));
+                Scene searchScene = new Scene(fxmlLoader.load(), 500, 550);
+                stage = new Stage();
+                stage.setResizable(false);
+                stage.setTitle("Nutrition Tracker");
+                stage.setScene(searchScene);
+                stage.show();
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Failed to create new Window.", e);
+            }
+        });
+        
+        //Open favourite report window
+        favBtn.setOnAction((ActionEvent event) -> {
+            try {
+                //Get current window from the btn element and close it
+                Stage stage = (Stage)favBtn.getScene().getWindow();
+                stage.close();
+                //Creeate new window and display it
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("FavouriteReportFXML.fxml"));
+                Scene searchScene = new Scene(fxmlLoader.load(), 500, 550);
+                stage = new Stage();
+                stage.setResizable(false);
+                stage.setTitle("Nutrition Tracker");
+                stage.setScene(searchScene);
+                stage.show();
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Failed to create new Window.", e);
+            }
+        });
+        
+        //Open nutrition report window
+        nutBasedBtn.setOnAction((ActionEvent event) -> {
+            try {
+                //Get current window from the btn element and close it
+                Stage stage = (Stage)nutBasedBtn.getScene().getWindow();
+                stage.close();
+                //Creeate new window and display it
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("NutritionReportFXML.fxml"));
                 Scene searchScene = new Scene(fxmlLoader.load(), 500, 550);
                 stage = new Stage();
                 stage.setResizable(false);
