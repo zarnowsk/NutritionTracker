@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package nutritiontracker;
 
 import java.io.File;
@@ -10,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,14 +19,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
- * This class represents the controller of the edit record window
+ * FXML Controller class in charge of the Add Window
+ * 
  * @author Michal Zarnowski
  */
 public class AddController implements Initializable {
@@ -303,6 +297,11 @@ public class AddController implements Initializable {
         nameTxt.requestFocus();
     }
     
+    /**
+     * Method displays an error message on the screen
+     * @param title of the error message
+     * @param header of the error message
+     */
     public void displayError(String title, String header) {
         Alert dialog = new Alert(AlertType.ERROR);
         dialog.setTitle(title);
