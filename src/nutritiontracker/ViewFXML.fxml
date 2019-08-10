@@ -12,13 +12,16 @@
         <Button fx:id="menuBtn" text="Main Menu" />
         <Label id="mainLabel" text="View Products" />
     </HBox>
-    <GridPane styleClass="filterArea" >
+    
+<!-- FOR FUTURE IMPLEMENTATION
+   <GridPane styleClass="filterArea" >
         <HBox styleClass="filterDropDown" GridPane.rowIndex="0" GridPane.columnIndex="0">
             <Label text="Filter" />
             <ComboBox fx:id="filterCmb" editable="false"/>
         </HBox>
         <Button fx:id="customWeightBtn" text="Enter Custom Weight" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-    </GridPane>
+    </GridPane>-->
+    
     <HBox>
         <TableView fx:id="recordsTbl" >
             <columns>
@@ -32,7 +35,8 @@
             </columns>
         </TableView>
         <VBox>
-            <Button fx:id="sortBtn" text="Sort" />
+            <!-- FOR FUTURE IMPLEMENTATION
+            <Button fx:id="sortBtn" text="Sort" /> -->
             <Button fx:id="editBtn" text="Edit" />
             <Button fx:id="deleteBtn" text="Delete" />
             <Button fx:id="prevBtn" text="Prev" />
