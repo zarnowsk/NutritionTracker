@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 public class MainMenuController implements Initializable {
     
     @FXML
-    private Button viewBtn, addBtn, searchBtn;
+    private Button viewBtn, addBtn, searchBtn, catBasedBtn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -72,7 +72,7 @@ public class MainMenuController implements Initializable {
             }
         });
         
-        //Search btn opens the search windo
+        //Search btn opens the search window
         searchBtn.setOnAction((ActionEvent event) -> {
             try {
                 //Get current window from the btn element and close it
@@ -82,6 +82,27 @@ public class MainMenuController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("SearchFXML.fxml"));
                 Scene searchScene = new Scene(fxmlLoader.load(), 700, 550);
+                stage = new Stage();
+                stage.setResizable(false);
+                stage.setTitle("Nutrition Tracker");
+                stage.setScene(searchScene);
+                stage.show();
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Failed to create new Window.", e);
+            }
+        });
+        
+        //Open category report window
+        catBasedBtn.setOnAction((ActionEvent event) -> {
+            try {
+                //Get current window from the btn element and close it
+                Stage stage = (Stage)catBasedBtn.getScene().getWindow();
+                stage.close();
+                //Creeate new window and display it
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("CategoryReportFXML.fxml"));
+                Scene searchScene = new Scene(fxmlLoader.load(), 400, 550);
                 stage = new Stage();
                 stage.setResizable(false);
                 stage.setTitle("Nutrition Tracker");
