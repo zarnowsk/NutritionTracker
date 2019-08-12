@@ -20,7 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class in charge of the Edit Window
+ * FXML Controller class in charge of the Search Window
  *
  * @author Michal Zarnowski
  */
